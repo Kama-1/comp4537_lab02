@@ -1,12 +1,20 @@
 export class StorageManager {
     constructor() {}
 
-    loadMessages() {
-
+    loadData(key) {
+        return localStorage.getItem(key);
     }
 
-    saveMessage(id, message) {
+    loadAllDataAsJSON() {
+        return JSON.stringify(localStorage);
+    }
 
+    saveData(key, text) {
+        localStorage.setItem(key, text);
+    }
+
+    removeData(key) {
+        localStorage.removeItem(key);
     }
 
 }

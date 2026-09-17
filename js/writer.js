@@ -4,7 +4,7 @@ import {Message} from "./components/message.js";
 class Writer {
     constructor() {
         this.storageManager = new StorageManager();
-        const jsonMessages = this.storageManager.loadMessages();
+        const jsonMessages = this.storageManager.loadAllDataAsJSON();
         this.messages = [];
     }
 
@@ -44,7 +44,7 @@ class Writer {
         const deleteButton = this.createDeleteButton(newMessageBoxID);
         const deleteBoxContainer = document.getElementById('delete-list');
 
-
+        this.storageManager.saveData(newMessageBoxID, messageBox.value);
         this.messages[newMessageBoxID] = new Message(newMessageBoxID, messageBox.value);
         messageBoxContainer.appendChild(messageBox);
         deleteBoxContainer.appendChild(deleteButton);
@@ -81,8 +81,7 @@ class Writer {
         setInterval(() => {
             this.updateMessageArrayFromBoxes();
             for (const message of this.messages) {
-                const jsonMessage = message.getJSON();
-                console.log(`Message ${message.id} ${message.text} to JSON: ${jsonMessage}`);
+                this.storageManager.saveData(message.id, message.text);
             }
         }, intervalSeconds * MILLISECONDS);
     }
