@@ -1,4 +1,4 @@
-export class message {
+export class Message {
     constructor(id, message) {
         this.id = id;
         this.message = message;
@@ -6,5 +6,9 @@ export class message {
 
     getJSON() {
         return JSON.parse(JSON.stringify(this.message));
+    }
+
+    static JSONToMessageArray (json) {
+
     }
 }
