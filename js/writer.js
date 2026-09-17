@@ -5,7 +5,7 @@ class Writer {
     constructor() {
         this.storageManager = new StorageManager();
         const jsonMessages = this.storageManager.loadMessages();
-        this.messages = Message.JSONToMessageArray(jsonMessages) || [];
+        this.messages = [];
     }
 
     deleteMessage(id) {
@@ -45,7 +45,7 @@ class Writer {
         const deleteBoxContainer = document.getElementById('delete-list');
 
 
-        this.messages[newMessageBoxID] = new Message(newMessageBoxID, messageBox.innerText);
+        this.messages[newMessageBoxID] = new Message(newMessageBoxID, messageBox.value);
         messageBoxContainer.appendChild(messageBox);
         deleteBoxContainer.appendChild(deleteButton);
     }
@@ -64,10 +64,34 @@ class Writer {
         buttonContainer.appendChild(addButton);
     }
 
+    updateMessageArrayFromBoxes() {
+        for (let i = 0; i < this.messages.length; i++) {
+            const message = this.messages[i];
+
+            const messageID = message.id;
+            const messageBox = document.getElementById(`message-box-${messageID}`);
+            if (messageBox) {
+                message.setText(messageBox.value);
+            }
+        }
+    }
+
+    beginSaveLoop(intervalSeconds) {
+        const MILLISECONDS = 1000;
+        setInterval(() => {
+            this.updateMessageArrayFromBoxes();
+            for (const message of this.messages) {
+                const jsonMessage = message.getJSON();
+                console.log(`Message ${message.id} ${message.text} to JSON: ${jsonMessage}`);
+            }
+        }, intervalSeconds * MILLISECONDS);
+    }
+
 }
 
 
 const writer = new Writer();
 writer.addStartingButton();
+writer.beginSaveLoop(2);
 
 

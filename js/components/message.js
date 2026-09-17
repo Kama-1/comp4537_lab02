@@ -1,11 +1,15 @@
 export class Message {
-    constructor(id, message) {
+    constructor(id, text) {
         this.id = id;
-        this.message = message;
+        this.text = text;
     }
 
     getJSON() {
-        return JSON.parse(JSON.stringify(this.message));
+        return JSON.stringify(this);
+    }
+
+    setText(newText) {
+        this.text = newText;
     }
 
     static JSONToMessageArray (json) {
