@@ -1,5 +1,6 @@
 import {StorageManager} from './storageManager.js';
 import {Message} from "./components/message.js";
+import {STRINGS} from '../lang/messages/en/user.js';
 
 class Reader {
     constructor() {
@@ -59,7 +60,7 @@ class Reader {
         setInterval(() => {
             this.messages = this.loadStoredMessages();
             this.displayMessages();
-            document.getElementById('last-load').innerHTML = `Last loaded at ${this.getCurrentTime()}`;
+            document.getElementById('last-load').innerHTML = `${STRINGS.LAST_LOADED} ${this.getCurrentTime()}`;
         }, intervalSeconds * MILLISECONDS);
     }
 
@@ -70,10 +71,16 @@ class Reader {
         return currentTime;
     }
 
+    initializeText() {
+        document.getElementsByTagName('h1').innerHTML = STRINGS.READER_TITLE;
+        document.getElementById('back-button').innerHTML = STRINGS.BACK;
+    }
+
 }
 
 
 const reader = new Reader();
+reader.initializeText();
 reader.displayMessages();
 reader.beginLoadLoop(2);
 

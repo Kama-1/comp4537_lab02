@@ -1,5 +1,6 @@
 import {StorageManager} from './storageManager.js';
 import {Message} from "./components/message.js";
+import {STRINGS} from '../lang/messages/en/user.js';
 
 class Writer {
     constructor() {
@@ -47,7 +48,7 @@ class Writer {
         });
         button.setAttribute('class', 'delete-button');
         button.setAttribute('id', `delete-message-${messageID}`);
-        button.innerText = "Delete";
+        button.innerText = STRINGS.DELETE;
         return button;
     }
 
@@ -75,7 +76,7 @@ class Writer {
             this.addNewMessageBox();
         });
         button.setAttribute("id", "add-message");
-        button.innerText = "Add Message";
+        button.innerText = STRINGS.ADD_MESSAGE;
         return button;
     }
 
@@ -128,7 +129,7 @@ class Writer {
                     this.storageManager.saveData(message.id, message.text);
                 }
             }
-            document.getElementById('last-save').innerHTML = `Last saved at ${this.getCurrentTime()}`;
+            document.getElementById('last-save').innerHTML = `${STRINGS.LAST_SAVED} ${this.getCurrentTime()}`;
         }, intervalSeconds * MILLISECONDS);
     }
 
@@ -139,10 +140,16 @@ class Writer {
         return currentTime;
     }
 
+    initializeText() {
+        document.getElementsByTagName('h1').innerHTML = STRINGS.WRITER_TITLE;
+        document.getElementById('back-button').innerHTML = STRINGS.BACK;
+    }
+
 }
 
 
 const writer = new Writer();
+writer.initializeText();
 writer.displayMessages();
 writer.addStartingButton();
 writer.beginSaveLoop(2);
