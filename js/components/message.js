@@ -12,7 +12,9 @@ export class Message {
         this.text = newText;
     }
 
-    static JSONToMessageArray (json) {
-
+    static MessageFromJSON(json) {
+        console.log(json);
+        const messageData = JSON.parse(json);
+        return new Message(messageData.id, messageData.text);
     }
 }

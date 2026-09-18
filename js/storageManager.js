@@ -5,8 +5,8 @@ export class StorageManager {
         return localStorage.getItem(key);
     }
 
-    loadAllDataAsJSON() {
-        return JSON.stringify(localStorage);
+    loadAllData() {
+        return localStorage;
     }
 
     saveData(key, text) {

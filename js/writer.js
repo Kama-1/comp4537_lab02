@@ -4,8 +4,7 @@ import {Message} from "./components/message.js";
 class Writer {
     constructor() {
         this.storageManager = new StorageManager();
-        const jsonMessages = this.storageManager.loadAllDataAsJSON();
-        this.messages = [];
+        this.messages = this.loadStoredMessages();
     }
 
     deleteMessage(id) {
@@ -32,27 +31,30 @@ class Writer {
         return button;
     }
 
-    addNewMessageBox() {
+    addNewMessageBox(id= this.messages.length, text='') {
+        console.log(id)
         const messageBox = document.createElement('input');
         const messageBoxContainer = document.getElementById('message-list');
-        const newMessageBoxID = this.messages.length;
 
         messageBox.type = 'text';
         messageBox.setAttribute('class', 'message-box');
-        messageBox.setAttribute('id', `message-box-${newMessageBoxID}`);
+        messageBox.setAttribute('id', `message-box-${id}`);
+        messageBox.value = text;
 
-        const deleteButton = this.createDeleteButton(newMessageBoxID);
+        const deleteButton = this.createDeleteButton(id);
         const deleteBoxContainer = document.getElementById('delete-list');
 
-        this.storageManager.saveData(newMessageBoxID, messageBox.value);
-        this.messages[newMessageBoxID] = new Message(newMessageBoxID, messageBox.value);
+        this.storageManager.saveData(id, messageBox.value);
+        this.messages[id] = new Message(id, messageBox.value);
         messageBoxContainer.appendChild(messageBox);
         deleteBoxContainer.appendChild(deleteButton);
     }
 
     createAddButton() {
         const button = document.createElement("button");
-        button.addEventListener("click", this.addNewMessageBox.bind(this));
+        button.addEventListener("click", () => {
+            this.addNewMessageBox();
+        });
         button.setAttribute("id", "add-message");
         button.innerText = "Add Message";
         return button;
@@ -62,6 +64,23 @@ class Writer {
         const addButton = this.createAddButton();
         const buttonContainer = document.getElementById('button-container');
         buttonContainer.appendChild(addButton);
+    }
+
+    loadStoredMessages() {
+        const storageData = this.storageManager.loadAllData();
+        let messageList = [];
+        for (const key in storageData) {
+            const text = this.storageManager.loadData(key);
+            const message = new Message(key, text);
+            messageList[parseInt(key)] = message;
+        }
+        return messageList;
+    }
+
+    displayMessages() {
+        for (const message of this.messages) {
+            this.addNewMessageBox(message.id, message.text);
+        }
     }
 
     updateMessageArrayFromBoxes() {
@@ -90,7 +109,9 @@ class Writer {
 
 
 const writer = new Writer();
+writer.displayMessages();
 writer.addStartingButton();
 writer.beginSaveLoop(2);
+
 
 
