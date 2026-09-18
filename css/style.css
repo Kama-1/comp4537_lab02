@@ -1,0 +1,14 @@
+#message-group {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+#message-list {
+    display: grid;
+    grid-template-rows: 1fr;
+}
+
+#delete-list {
+    display: grid;
+    grid-template-rows: 1fr;
+}
