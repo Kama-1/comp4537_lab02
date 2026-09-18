@@ -102,7 +102,15 @@ class Writer {
             for (const message of this.messages) {
                 this.storageManager.saveData(message.id, message.text);
             }
+            document.getElementById('last-save').innerHTML = `Last saved at ${this.getCurrentTime()}`;
         }, intervalSeconds * MILLISECONDS);
+    }
+
+    getCurrentTime() {
+        const date = new Date();
+        const currentTime = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} 
+        ${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+        return currentTime;
     }
 
 }
